@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#bc6c25">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spelling Bee Practice</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>🐝 Spelling Bee Practice</h1>
+    <div class="mascot">
+      <img src="bee.gif" alt="Bee Mascot" id="beeMascot">
+    </div>
+    <div class="controls">
+      <button onclick="newWord()">New Word</button>
+      <button onclick="speakWord()">🔊 Hear Word</button>
+      <button onclick="showHint()">🔍 Hint</button>
+      <button onclick="toggleDarkMode()">🌚 Toggle Theme</button>
+    </div>
+
+    <select id="voiceSelect" onchange="setVoice()">
+      <option value="">Select Voice</option>
+    </select>
+
+    <input
+      type="text"
+      id="spellingInput"
+      placeholder="Type your spelling here"
+      onkeydown="if(event.key==='Enter'){checkSpelling()}"
+    />
+    <button onclick="checkSpelling()">Check</button>
+
+    <div id="result"></div>
+
+    <div class="scoreboard">
+      <p>✅ Score: <span id="score">0</span></p>
+      <p>🏆 High Score: <span id="highScore">0</span></p>
+      <p>⏱️ Time Left: <span id="timer">--</span></p>
+    </div>
+
+    <button onclick="startTimer()">Start Challenge Mode (60s)</button>
+    <button onclick="resetGame()">Reset Game</button>
+
+    <h2>📜 Word History</h2>
+    <ul id="wordHistory"></ul>
+  </div>
+
+  <!-- Sound Effects -->
+  <audio id="correctSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_99619ca0a5.mp3"></audio>
+  <audio id="wrongSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_f5efb612b0.mp3"></audio>
+
+  <script src="script/wordData.js"></script>
+  <script src="script/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('script/service-worker.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
+</body>
+</html>

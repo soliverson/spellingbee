@@ -1,0 +1,20 @@
+{
+  "name": "Spelling Bee Practice",
+  "short_name": "SpellingBee",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fffbee",
+  "theme_color": "#bc6c25",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
