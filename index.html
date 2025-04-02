@@ -43,8 +43,17 @@
 
     <select id="voiceSelect"></select>
 
-    <input type="text" id="spellingInput" placeholder="Type your spelling here">
-    <button id="checkBtn">Check</button>
+    <input 
+    type="text" 
+    id="spellingInput" 
+    placeholder="Type your spelling here"
+    autocomplete="off" 
+    autocorrect="off" 
+    autocapitalize="off" 
+    spellcheck="false" 
+    inputmode="latin"
+  >
+      <button id="checkBtn">Check</button>
 
     <div id="result"></div>
 
