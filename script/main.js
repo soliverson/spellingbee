@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded", () => {
   updateTrickyWords();
   document.getElementById("highScore").textContent = getHighScore();
 
-  // Event listeners for controls
+  // Button listeners
   document.getElementById("newWordBtn").addEventListener("click", newWord);
   document.getElementById("checkBtn").addEventListener("click", checkSpelling);
   document.getElementById("startTimerBtn").addEventListener("click", startTimer);
@@ -35,28 +35,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("hearWordBtn").addEventListener("click", () => {
     const word = window.currentWord;
-    if (word) {
-      speakWord(word);
-    }
+    if (word) speakWord(word);
   });
 
   document.getElementById("hintBtn").addEventListener("click", () => {
     const word = window.currentWord;
-    if (word) {
-      const definition = wordList[word]?.definition;
-      if (definition) showHint(word, definition);
-    }
+    if (word) showHint(word);
   });
 
   document.getElementById("sentenceBtn").addEventListener("click", () => {
     const word = window.currentWord;
-    if (word) {
-      const sentence = wordList[word]?.sentence;
-      if (sentence) readSentence(word, sentence);
-    }
+    if (word) readSentence(word);
   });
 
-  // Pressing "Enter" submits spelling
   document.getElementById("spellingInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       checkSpelling();

@@ -1,35 +1,38 @@
 import wordList from './wordData.js';
 
 let selectedVoice = null;
+const preferredVoices = ["Samantha", "Google US English"];
 
 export function loadVoices() {
-  const voices = speechSynthesis.getVoices();
+  const voices = speechSynthesis.getVoices().filter(v => v.lang === "en-US");
   const voiceSelect = document.getElementById("voiceSelect");
-  voiceSelect.innerHTML = '<option value="">Select Voice</option>';
-  voices.forEach((voice, index) => {
+  voiceSelect.innerHTML = "";
+
+  voices.forEach((voice) => {
     const option = document.createElement("option");
-    option.value = index;
-    option.textContent = `${voice.name} (${voice.lang})`;
+    option.value = voice.name;
+    option.textContent = `${voice.name}`;
     voiceSelect.appendChild(option);
   });
 
-  if (voices.length > 0 && !selectedVoice) {
-    selectedVoice = voices[0];
+  // Try to select Samantha or Google US English
+  selectedVoice = voices.find(v => preferredVoices.includes(v.name)) || voices[0];
+  if (selectedVoice) {
+    voiceSelect.value = selectedVoice.name;
   }
 }
 
-speechSynthesis.onvoiceschanged = loadVoices;
+speechSynthesis.addEventListener("voiceschanged", loadVoices);
 
 export function setVoice() {
+  const selectedName = document.getElementById("voiceSelect").value;
   const voices = speechSynthesis.getVoices();
-  const index = parseInt(document.getElementById("voiceSelect").value);
-  if (!isNaN(index)) {
-    selectedVoice = voices[index];
-  }
+  selectedVoice = voices.find(voice => voice.name === selectedName);
 }
 
 export function speakWord(word) {
-  const utterance = new SpeechSynthesisUtterance(`The word is ${word}`);
+  if (!word) return;
+  const utterance = new SpeechSynthesisUtterance(`The word is ${word}.`);
   if (selectedVoice) utterance.voice = selectedVoice;
   speechSynthesis.speak(utterance);
 }
