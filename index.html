@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Spelling Bee Practice</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#bc6c25">
@@ -20,35 +22,41 @@
     </div>
 
     <div class="controls">
-      <button onclick="newWord()">New Word</button>
-      <button onclick="speakWord()">🔊 Hear Word</button>
-      <button onclick="showHint()">📘 Read Definition</button>
-      <button onclick="readSentence()">🗣️ Read Sentence</button>
-      <button onclick="toggleDarkMode()">🌗 Toggle Theme</button>
+      <button id="newWordBtn">🎲 New Word</button>
+<button id="hearWordBtn">🔊 Hear Word</button>
+<button id="hintBtn">📘 Read Definition</button>
+<button id="sentenceBtn">🗣️ Read Sentence</button>
+<button id="themeBtn">🌗 Theme</button>
+      <label>
+        <input type="checkbox" id="studyModeToggle"> 📖 Study Mode
+      </label>
     </div>
 
-    <select id="voiceSelect" onchange="setVoice()">
-      <option value="">Select Voice</option>
-    </select>
+    <div class="modeToggle">
+      <label>
+        <input type="radio" name="playerMode" value="1" checked> 1 Player
+      </label>
+      <label>
+        <input type="radio" name="playerMode" value="2"> 2 Players
+      </label>
+    </div>
 
-    <input
-      type="text"
-      id="spellingInput"
-      placeholder="Type your spelling here"
-      onkeydown="if(event.key==='Enter'){checkSpelling()}"
-    />
-    <button onclick="checkSpelling()">Check</button>
+    <select id="voiceSelect"></select>
+
+    <input type="text" id="spellingInput" placeholder="Type your spelling here">
+    <button id="checkBtn">Check</button>
 
     <div id="result"></div>
 
     <div class="scoreboard">
-      <p>✅ Score: <span id="score">0</span></p>
+      <p>✅ Player 1 Score: <span id="score1">0</span></p>
+      <p>✅ Player 2 Score: <span id="score2">0</span></p>
       <p>🏆 High Score: <span id="highScore">0</span></p>
       <p>⏱️ Time Left: <span id="timer">--</span></p>
     </div>
 
-    <button onclick="startTimer()">Start Challenge Mode (60s)</button>
-    <button onclick="resetGame()">Reset Game</button>
+    <button id="startTimerBtn">⏱️ Start Challenge Mode (60s)</button>
+    <button id="resetBtn">🔄 Reset Game</button>
 
     <div class="columns">
       <div>
@@ -62,11 +70,10 @@
     </div>
   </div>
 
-  <audio id="correctSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_99619ca0a5.mp3"></audio>
-  <audio id="wrongSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_f5efb612b0.mp3"></audio>
+  <audio id="correctSound" src="sounds/correct.mp3"></audio>
+<audio id="wrongSound" src="sounds/wrong.mp3"></audio>
 
-  <script src="script/wordData.js"></script>
-  <script src="script/main.js"></script>
+  <script type="module" src="script/main.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
