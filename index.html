@@ -4,11 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Spelling Bee Practice</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+  <base href="./">
 
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#bc6c25">
+  <!-- CSS & Manifest -->
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#bc6c25" />
+
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
@@ -17,7 +21,7 @@
 
     <div class="mascot">
       <video id="beeMascot" autoplay loop muted playsinline width="100" class="floating">
-        <source src="bee.mp4" type="video/mp4">
+        <source src="./bee.mp4" type="video/mp4">
       </video>
     </div>
 
@@ -66,6 +70,7 @@
 
     <button id="startTimerBtn">⏱️ Start Challenge Mode (60s)</button>
     <button id="resetBtn">🔄 Reset Game</button>
+
     <div class="columns">
       <div>
         <h2>📜 Word History</h2>
@@ -76,20 +81,20 @@
         <ul id="trickyWords"></ul>
         <button id="clearTrickyWordsBtn">🧹 Clear Tricky Words!</button>
       </div>
-    </div>   
-
+    </div>
   </div>
 
-  <audio id="correctSound" src="sounds/correct.mp3"></audio>
-  <audio id="wrongSound" src="sounds/wrong.mp3"></audio>
+  <!-- Sounds -->
+  <audio id="correctSound" src="./sounds/correct.mp3"></audio>
+  <audio id="wrongSound" src="./sounds/wrong.mp3"></audio>
 
-  <!-- ✅ Proper module loading -->
-  <script type="module" src="script/main.js"></script>
+  <!-- Main JS -->
+  <script type="module" src="./script/main.js"></script>
 
   <!-- Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
+      navigator.serviceWorker.register('./service-worker.js')
         .then(() => console.log('Service Worker Registered ✅'))
         .catch(err => console.error('Service Worker registration failed:', err));
     }
