@@ -16,6 +16,7 @@ let timeLeft = 0;
 let timerInterval = null;
 let wordHistory = [];
 let trickyWords = getTrickyWords();
+let failedAttemptsMap = {};
 export let currentWord = "";
 window.currentWord = "";
 
@@ -39,6 +40,8 @@ export function newWord() {
   currentWord = keys[Math.floor(Math.random() * keys.length)];
   window.currentWord = currentWord;
 
+  failedAttemptsMap[currentWord] = 0;
+
   document.getElementById("spellingInput").value = "";
   document.getElementById("result").textContent = "";
 
@@ -48,15 +51,22 @@ export function newWord() {
 export function checkSpelling() {
   const userInput = document.getElementById("spellingInput").value.trim().toLowerCase();
   const correct = currentWord.toLowerCase();
-  const alternates = wordList[currentWord].alternates || [];
+
+  const wordEntry = wordList[currentWord];
+
+  if (!wordEntry) {
+    console.warn(`⚠️ Word "${currentWord}" not found in wordList`);
+    document.getElementById("result").textContent = `⚠️ Word not available. Skipping...`;
+    setTimeout(newWord, 1500);
+    return;
+  }
+
+  const alternates = wordEntry.alternates || [];
   const isCorrect = userInput === correct || alternates.includes(userInput);
 
   if (isCorrect) {
-    if (currentPlayer === 1) {
-      score1++;
-    } else {
-      score2++;
-    }
+    if (currentPlayer === 1) score1++;
+    else score2++;
 
     const currentScore = Math.max(score1, score2);
     if (currentScore > highScore) {
@@ -77,13 +87,28 @@ export function checkSpelling() {
 
     newWord();
   } else {
-    document.getElementById("result").textContent = "❌ Try again!";
-    if (!trickyWords.includes(currentWord)) {
-      trickyWords.push(currentWord);
-      saveTrickyWords(trickyWords);
-    }
+    failedAttemptsMap[currentWord] = (failedAttemptsMap[currentWord] || 0) + 1;
 
-    switchPlayerIfNeeded();
+    if (failedAttemptsMap[currentWord] >= 3) {
+      document.getElementById("result").textContent =
+        `❌ The correct spelling is: "${currentWord}"`;
+
+      if (!trickyWords.includes(currentWord)) {
+        trickyWords.push(currentWord);
+        saveTrickyWords(trickyWords);
+        updateTrickyWords();
+      }
+
+      failedAttemptsMap[currentWord] = 0;
+      switchPlayerIfNeeded();
+
+      setTimeout(() => {
+        newWord();
+      }, 2500);
+    } else {
+      document.getElementById("result").textContent = "❌ Try again!";
+      switchPlayerIfNeeded();
+    }
   }
 }
 
@@ -131,6 +156,7 @@ export function resetGame() {
   wordHistory = [];
   currentWord = "";
   window.currentWord = "";
+  failedAttemptsMap = {};
 
   document.getElementById("result").textContent = "";
   document.getElementById("spellingInput").value = "";

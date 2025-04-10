@@ -16,32 +16,34 @@ import {
   setVoice
 } from './voiceUtils.js';
 
-import wordList from './wordData.js';
 import { updateTrickyWords } from './ui.js';
 import { getHighScore } from './storage.js';
 
 window.addEventListener("DOMContentLoaded", () => {
   console.log("🔁 DOM fully loaded");
 
-  updateTrickyWords();
+  // ✅ Always update tricky words with speakWord callback
+  updateTrickyWords(speakWord);
+
+  // ✅ Set high score
   document.getElementById("highScore").textContent = getHighScore();
 
-  // ✅ Safely attach listener to Clear Tricky Words button
+  // ✅ Wire up Clear Tricky Words Button AFTER DOM is ready
   const clearBtn = document.getElementById("clearTrickyWordsBtn");
   if (clearBtn) {
     clearBtn.addEventListener("click", clearTrickyWords);
-    console.log("🧹 Clear Tricky Words button found and wired up.");
+    console.log("🧹 Clear Tricky Words button wired up.");
   } else {
     console.warn("⚠️ clearTrickyWordsBtn not found in DOM");
   }
 
-  // Defer voice loading until user interacts (iOS fix)
+  // ✅ Load voices on user interaction (iOS fix)
   document.body.addEventListener("click", function initVoicesOnce() {
     loadVoices();
     document.body.removeEventListener("click", initVoicesOnce);
   });
 
-  // Button listeners
+  // ✅ Hook up game buttons
   document.getElementById("newWordBtn").addEventListener("click", newWord);
   document.getElementById("checkBtn").addEventListener("click", checkSpelling);
   document.getElementById("startTimerBtn").addEventListener("click", () => startTimer(60));

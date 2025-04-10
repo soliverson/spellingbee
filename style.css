@@ -5,21 +5,26 @@ body {
   margin: 0;
   padding: 1rem;
 }
+
 .dark-mode {
   background: #1e1e1e;
   color: #f3f3f3;
 }
+
 .container {
   max-width: 700px;
   margin: auto;
   text-align: center;
 }
-input[type="text"], select {
+
+input[type="text"],
+select {
   padding: 0.5rem;
   font-size: 1rem;
   margin-top: 0.5rem;
   width: 80%;
 }
+
 button {
   margin: 0.25rem;
   padding: 0.5rem 1rem;
@@ -28,7 +33,24 @@ button {
   color: white;
   border: none;
   border-radius: 6px;
+  cursor: pointer;
 }
+
+/* Tricky Words Button Styling */
+#clearTrickyWordsBtn {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #fef3c7;
+  color: #333;
+  border: 1px solid #eab308;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: center;
+  margin-top: 0.5rem;
+}
+
+/* Column Layout Fix */
 .columns {
   display: flex;
   justify-content: space-around;
@@ -36,20 +58,47 @@ button {
   gap: 2rem;
   margin-top: 1rem;
 }
+
 .columns div {
   flex: 1;
   min-width: 200px;
-  max-height: 200px;
-  overflow-y: auto;
+  max-width: 300px;
   background: #f9f9f9;
   padding: 0.5rem;
   border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
+
+/* List Scroll Fix */
+.columns ul {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  max-height: 180px;
+}
+
+#trickyWords {
+  margin-bottom: 0.5rem;
+}
+
+/* Mascot Animation */
 .floating {
   animation: float 3s ease-in-out infinite;
 }
+
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
