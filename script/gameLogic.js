@@ -75,7 +75,6 @@ export function checkSpelling() {
     }
 
     updateScoreDisplay();
-
     wordHistory.push(currentWord);
     updateWordHistory(wordHistory);
 
@@ -85,24 +84,26 @@ export function checkSpelling() {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
+    failedAttemptsMap[currentWord] = 0;
     newWord();
   } else {
     failedAttemptsMap[currentWord] = (failedAttemptsMap[currentWord] || 0) + 1;
 
     if (failedAttemptsMap[currentWord] >= 3) {
-      document.getElementById("result").textContent =
-        `❌ The correct spelling is: "${currentWord}"`;
+      document.getElementById("result").textContent = `❌ The correct spelling is: "${currentWord}"`;
 
       if (!trickyWords.includes(currentWord)) {
         trickyWords.push(currentWord);
         saveTrickyWords(trickyWords);
-        updateTrickyWords();
+        updateTrickyWords(); // You can pass speakWord if clickable
       }
 
       failedAttemptsMap[currentWord] = 0;
+
       switchPlayerIfNeeded();
 
       setTimeout(() => {
+        document.getElementById("result").textContent = "";
         newWord();
       }, 2500);
     } else {
