@@ -4,25 +4,30 @@ let selectedVoice = null;
 const preferredVoices = ["Samantha", "Google US English"];
 
 export function loadVoices() {
-  const voices = speechSynthesis.getVoices().filter(v => v.lang === "en-US");
+  let voices = speechSynthesis.getVoices();
+
+  if (!voices.length) {
+    // Retry loading voices (especially for iOS)
+    setTimeout(loadVoices, 250);
+    return;
+  }
+
+  voices = voices.filter(v => v.lang === "en-US");
   const voiceSelect = document.getElementById("voiceSelect");
   voiceSelect.innerHTML = "";
 
   voices.forEach((voice) => {
     const option = document.createElement("option");
     option.value = voice.name;
-    option.textContent = `${voice.name}`;
+    option.textContent = voice.name;
     voiceSelect.appendChild(option);
   });
 
-  // Try to select Samantha or Google US English
   selectedVoice = voices.find(v => preferredVoices.includes(v.name)) || voices[0];
   if (selectedVoice) {
     voiceSelect.value = selectedVoice.name;
   }
 }
-
-speechSynthesis.addEventListener("voiceschanged", loadVoices);
 
 export function setVoice() {
   const selectedName = document.getElementById("voiceSelect").value;

@@ -1,6 +1,11 @@
 import wordList from './wordData.js';
-import { updateWordHistory } from './ui.js';
-import { getHighScore, setHighScore, getTrickyWords, saveTrickyWords } from './storage.js';
+import { updateWordHistory, updateTrickyWords } from './ui.js';
+import {
+  getHighScore,
+  setHighScore,
+  getTrickyWords,
+  saveTrickyWords
+} from './storage.js';
 import { speakWord } from './voiceUtils.js';
 
 let score1 = 0;
@@ -70,7 +75,7 @@ export function checkSpelling() {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
-    newWord(); // give a new word without switching players (they stay on correct answer)
+    newWord();
   } else {
     document.getElementById("result").textContent = "❌ Try again!";
     if (!trickyWords.includes(currentWord)) {
@@ -78,22 +83,40 @@ export function checkSpelling() {
       saveTrickyWords(trickyWords);
     }
 
-    switchPlayerIfNeeded(); // only switch if incorrect
+    switchPlayerIfNeeded();
   }
 }
 
 export function startTimer(duration = 60) {
-  timeLeft = duration;
-  document.getElementById("timer").textContent = timeLeft;
-  if (timerInterval) clearInterval(timerInterval);
+  if (timerInterval) return;
+
+  timeLeft = parseInt(duration);
+  if (isNaN(timeLeft) || timeLeft <= 0) timeLeft = 60;
+
+  document.getElementById("timer").textContent = `${timeLeft}s`;
+
   timerInterval = setInterval(() => {
     timeLeft--;
-    document.getElementById("timer").textContent = timeLeft;
+    if (timeLeft >= 0) {
+      document.getElementById("timer").textContent = `${timeLeft}s`;
+    }
+
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      alert(`⏰ Time's up! Player 1: ${score1}, Player 2: ${score2}`);
+      timerInterval = null;
+
+      document.getElementById("timer").textContent = "⏰ Time's up!";
+      document.getElementById("spellingInput").disabled = true;
+      document.getElementById("checkBtn").disabled = true;
+      document.getElementById("newWordBtn").disabled = true;
+
+      alert(`⏰ Time's up!\nPlayer 1 Score: ${score1}\nPlayer 2 Score: ${score2}`);
     }
   }, 1000);
+
+  document.getElementById("spellingInput").disabled = false;
+  document.getElementById("checkBtn").disabled = false;
+  document.getElementById("newWordBtn").disabled = false;
 }
 
 export function resetGame() {
@@ -101,16 +124,29 @@ export function resetGame() {
   score2 = 0;
   currentPlayer = 1;
   timeLeft = 0;
+
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = null;
+
   wordHistory = [];
   currentWord = "";
   window.currentWord = "";
+
   document.getElementById("result").textContent = "";
   document.getElementById("spellingInput").value = "";
+  document.getElementById("spellingInput").disabled = false;
+  document.getElementById("checkBtn").disabled = false;
+  document.getElementById("newWordBtn").disabled = false;
+  document.getElementById("timer").textContent = "--";
+
   updateWordHistory(wordHistory);
   updateScoreDisplay();
-  document.getElementById("timer").textContent = "--";
+}
+
+export function clearTrickyWords() {
+  trickyWords = [];
+  saveTrickyWords(trickyWords);
+  updateTrickyWords();
 }
 
 export function toggleDarkMode() {

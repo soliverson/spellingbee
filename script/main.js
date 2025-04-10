@@ -4,7 +4,8 @@ import {
   startTimer,
   resetGame,
   toggleDarkMode,
-  toggleStudyMode
+  toggleStudyMode,
+  clearTrickyWords
 } from './gameLogic.js';
 
 import {
@@ -20,14 +21,30 @@ import { updateTrickyWords } from './ui.js';
 import { getHighScore } from './storage.js';
 
 window.addEventListener("DOMContentLoaded", () => {
-  loadVoices();
+  console.log("🔁 DOM fully loaded");
+
   updateTrickyWords();
   document.getElementById("highScore").textContent = getHighScore();
+
+  // ✅ Safely attach listener to Clear Tricky Words button
+  const clearBtn = document.getElementById("clearTrickyWordsBtn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", clearTrickyWords);
+    console.log("🧹 Clear Tricky Words button found and wired up.");
+  } else {
+    console.warn("⚠️ clearTrickyWordsBtn not found in DOM");
+  }
+
+  // Defer voice loading until user interacts (iOS fix)
+  document.body.addEventListener("click", function initVoicesOnce() {
+    loadVoices();
+    document.body.removeEventListener("click", initVoicesOnce);
+  });
 
   // Button listeners
   document.getElementById("newWordBtn").addEventListener("click", newWord);
   document.getElementById("checkBtn").addEventListener("click", checkSpelling);
-  document.getElementById("startTimerBtn").addEventListener("click", startTimer);
+  document.getElementById("startTimerBtn").addEventListener("click", () => startTimer(60));
   document.getElementById("resetBtn").addEventListener("click", resetGame);
   document.getElementById("themeBtn").addEventListener("click", toggleDarkMode);
   document.getElementById("studyModeToggle").addEventListener("change", toggleStudyMode);

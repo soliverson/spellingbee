@@ -23,10 +23,10 @@
 
     <div class="controls">
       <button id="newWordBtn">🎲 New Word</button>
-<button id="hearWordBtn">🔊 Hear Word</button>
-<button id="hintBtn">📘 Read Definition</button>
-<button id="sentenceBtn">🗣️ Read Sentence</button>
-<button id="themeBtn">🌗 Theme</button>
+      <button id="hearWordBtn">🔊 Hear Word</button>
+      <button id="hintBtn">📘 Read Definition</button>
+      <button id="sentenceBtn">🗣️ Read Sentence</button>
+      <button id="themeBtn">🌗 Theme</button>
       <label>
         <input type="checkbox" id="studyModeToggle"> 📖 Study Mode
       </label>
@@ -44,16 +44,16 @@
     <select id="voiceSelect"></select>
 
     <input 
-    type="text" 
-    id="spellingInput" 
-    placeholder="Type your spelling here"
-    autocomplete="off" 
-    autocorrect="off" 
-    autocapitalize="off" 
-    spellcheck="false" 
-    inputmode="latin"
-  >
-      <button id="checkBtn">Check</button>
+      type="text" 
+      id="spellingInput" 
+      placeholder="Type your spelling here"
+      autocomplete="off" 
+      autocorrect="off" 
+      autocapitalize="off" 
+      spellcheck="false" 
+      inputmode="latin"
+    >
+    <button id="checkBtn">Check</button>
 
     <div id="result"></div>
 
@@ -75,18 +75,23 @@
       <div>
         <h2>❌ Tricky Words</h2>
         <ul id="trickyWords"></ul>
+        <button id="clearTrickyWordsBtn">🧹 Clear Tricky Words</button>
       </div>
     </div>
   </div>
 
   <audio id="correctSound" src="sounds/correct.mp3"></audio>
-<audio id="wrongSound" src="sounds/wrong.mp3"></audio>
+  <audio id="wrongSound" src="sounds/wrong.mp3"></audio>
 
+  <!-- ✅ Proper module loading -->
   <script type="module" src="script/main.js"></script>
+
+  <!-- Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker Registered'));
+        .then(() => console.log('Service Worker Registered ✅'))
+        .catch(err => console.error('Service Worker registration failed:', err));
     }
   </script>
 </body>
